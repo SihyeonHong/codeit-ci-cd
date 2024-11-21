@@ -3,6 +3,7 @@
 version: 2.1
 orbs:
   node: circleci/node@5
+  cypress: cypress-io/cypress@3.5.0 # Cypress Orb 추가
 jobs:
   test-node:
     # Install node dependencies and run tests
@@ -39,6 +40,14 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: node-build
+
+  cypress-test: # Cypress 테스트 작업 정의
+    executor: cypress/base-16
+    steps:
+      - checkout
+      - cypress/install
+      - cypress/run
+
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
@@ -47,10 +56,10 @@ jobs:
       # Replace this with steps to deploy to users
       - run:
           name: deploy
-          command: '#e.g. ./deploy.sh'
+          command: "#e.g. ./deploy.sh"
       - run:
           name: found github actions config
-          command: ':'
+          command: ":"
 workflows:
   build-and-test:
     jobs:
@@ -58,6 +67,9 @@ workflows:
       - build-node:
           requires:
             - test-node
+      - cypress-test: # Cypress 테스트 추가
+          requires:
+            - build-node
     # - deploy:
     #     requires:
     #       - build-node

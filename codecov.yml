@@ -1,0 +1,14 @@
+# codecov.yml (프로젝트 루트에 위치)
+comment:
+  layout: "reach, diff, flags, files" # PR 코멘트에 표시할 레이아웃 (기본 설정)
+  behavior: default # PR 코멘트를 업데이트하거나, 새로 추가하는 방식
+  require_changes: true # 커버리지 변화가 없으면 코멘트를 생략
+
+coverage:
+  status:
+    project:
+      default:
+        target: 90% # 목표 커버리지 (90% 이상)
+        threshold: 1% # 목표 대비 허용할 변화량 (-1% 이내는 통과)
+        paths:
+          - "app/" # 특정 경로에 커버리지 체크 적용 (옵션)

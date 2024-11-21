@@ -1,0 +1,50 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request: 
+    branches:
+      - '**' 
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20] # Node.js 버전 매트릭스 설정
+
+    steps:
+      # 리포지토리 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm' # 종속성 캐싱
+
+      # 의존성 설치
+      - name: Install dependencies
+        run: npm install
+
+      # 빌드 스크립트 실행
+      - name: Run build
+        run: npm run build
+
+      # 테스트 실행
+      - name: Run tests
+        run: npm test
+
+      # Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info # Jest가 생성한 커버리지 파일
+          flags: unittests # 커버리지 업로드에 플래그 추가 (옵션)
+          token: ${{ secrets.CODECOV_TOKEN }} # Codecov 업로드 토큰

@@ -1,9 +1,12 @@
 name: Build and Test
 
 on:
-  pull_request: # PR 생성 및 업데이트 시 실행
+  push:
     branches:
-      - '**' # 모든 브랜치에 대해 작동
+      - '**'
+  pull_request: 
+    branches:
+      - '**' 
 
 jobs:
   build-and-test:
@@ -37,3 +40,11 @@ jobs:
       # 테스트 실행
       - name: Run tests
         run: npm test
+
+      # Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info # Jest가 생성한 커버리지 파일
+          flags: unittests # 커버리지 업로드에 플래그 추가 (옵션)
+          token: ${{ secrets.CODECOV_TOKEN }} # Codecov 업로드 토큰

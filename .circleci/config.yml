@@ -1,37 +1,19 @@
 version: 2.1
-
 orbs:
   cypress: cypress-io/cypress@3
 
-executors:
-  custom-node-executor:
-    docker:
-      - image: cypress/browsers:node-18.18.0-chrome107-ff102
-
 jobs:
-  cypress-tests:
-    executor: custom-node-executor
+  cypress-run:
+    executor:
+      name: cypress/default
+      node-version: "20.6.0"
     steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Build project
-          command: npm run build
-      - run:
-          name: Start production server
-          command: |
-            npm run start & 
-            npx wait-on http://localhost:3000 --timeout 120000
-      - run:
-          name: Start Xvfb
-          command: |
-            Xvfb :99 -screen 0 1920x1080x24 & 
-            export DISPLAY=:99
-      - cypress/run-tests
+      - cypress/install
+      - cypress/run-tests:
+          cypress-command: "npx wait-on@latest http://localhost:3000 && npx cypress run"
+          start-command: "npm run build && npm run start"
 
 workflows:
-  build-and-test:
+  build:
     jobs:
-      - cypress-tests
+      - cypress-run

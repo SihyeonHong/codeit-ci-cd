@@ -6,7 +6,7 @@ orbs:
 executors:
   custom-node-executor:
     docker:
-      - image: node:18.17.0-bullseye # Node.js 공식 이미지 사용
+      - image: node:18.18.0-bullseye
 
 jobs:
   cypress-tests:
@@ -22,14 +22,10 @@ jobs:
       - run:
           name: Start production server
           command: |
-            npm run start &
+            npm run start & 
             npx wait-on http://localhost:3000 --timeout 120000
-      - run:
-          name: Install Cypress
-          command: npm install cypress --save-dev
-      - run:
-          name: Run Cypress Tests
-          command: npx cypress run --browser chrome
+      - cypress/run-tests:
+          start: npx wait-on http://localhost:3000
 
 workflows:
   build-and-test:

@@ -7,4 +7,4 @@ workflows:
   build-and-test:
     jobs:
       - cypress/run:
-          start-command: "npm run start"
+          start-command: "npm install && npm run start"

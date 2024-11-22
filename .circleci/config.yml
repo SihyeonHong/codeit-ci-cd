@@ -8,19 +8,26 @@ executors:
     docker:
       - image: cypress/base:18.18.0
 
+jobs:
+  cypress-tests:
+    executor: custom-node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build project
+          command: npm run build
+      - run:
+          name: Start production server
+          command: |
+            npm run start &
+            npx wait-on http://localhost:3000
+      - cypress/run:
+          browser: chrome
+
 workflows:
   build-and-test:
     jobs:
-      - cypress/run-tests:
-          executor: custom-node-executor
-          pre-steps:
-            - checkout
-            - run:
-                name: Install dependencies
-                command: npm install
-            - run:
-                name: Build project
-                command: npm run build
-          start-command: "npm run start"
-          wait-on: "http://localhost:3000"
-          browser: chrome
+      - cypress-tests

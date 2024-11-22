@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3
+  cypress: cypress-io/cypress@4
 
 executors:
   custom-node-executor:
     docker:
-      - image: cypress/base:18.17.0
+      - image: node:18.17.0-bullseye # Node.js 공식 이미지 사용
 
 jobs:
   cypress-tests:
@@ -23,7 +23,10 @@ jobs:
           name: Start production server
           command: |
             npm run start &
-            npx wait-on http://localhost:3000
+            npx wait-on http://localhost:3000 --timeout 120000
+      - run:
+          name: Install Cypress
+          command: npm install cypress --save-dev
       - run:
           name: Run Cypress Tests
           command: npx cypress run --browser chrome

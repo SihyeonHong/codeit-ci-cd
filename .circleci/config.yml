@@ -46,7 +46,8 @@ jobs:
     steps:
       - checkout
       - cypress/install
-      - cypress/run
+      - cypress/run:
+          start-command: "npm run start"
 
   deploy:
     # This is an example deploy job, not actually used by the workflow

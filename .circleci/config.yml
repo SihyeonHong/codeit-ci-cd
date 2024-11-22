@@ -6,7 +6,7 @@ orbs:
 executors:
   custom-node-executor:
     docker:
-      - image: cypress/base:18.18.0
+      - image: cypress/base:18.17.0
 
 jobs:
   cypress-tests:

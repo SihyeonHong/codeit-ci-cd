@@ -1,11 +1,10 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3.6.1 # Cypress Orb 사용
+  cypress: cypress-io/cypress@3
 
 workflows:
   build-and-test:
     jobs:
-      - cypress/run: # Cypress 테스트 실행
-          start-command: "npm run start" # 애플리케이션 실행 명령
-
+      - cypress/run:
+          start-command: "npm run start"

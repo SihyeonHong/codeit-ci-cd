@@ -24,8 +24,7 @@ jobs:
           command: |
             npm run start & 
             npx wait-on http://localhost:3000 --timeout 120000
-      - cypress/run-tests:
-          start: npx wait-on http://localhost:3000
+      - cypress/run-tests
 
 workflows:
   build-and-test:

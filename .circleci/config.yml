@@ -11,19 +11,16 @@ executors:
 workflows:
   build-and-test:
     jobs:
-      - cypress/run:
-          executor: custom-node-executor # 커스텀 실행자 사용
+      - cypress/run-tests:
+          executor: custom-node-executor
           pre-steps:
-            - checkout # 코드 체크아웃
+            - checkout
             - run:
                 name: Install dependencies
                 command: npm install
             - run:
                 name: Build project
                 command: npm run build
-            - run:
-                name: Start production server
-                command: |
-                  npm run start &
-                  npx wait-on http://localhost:3000  # 로컬 서버가 실행될 때까지 기다림
-          browser: chrome # 브라우저 선택 (선택 사항, 기본값은 Electron)
+          start-command: "npm run start"
+          wait-on: "http://localhost:3000"
+          browser: chrome

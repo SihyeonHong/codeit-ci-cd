@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3.5.0 # Cypress Orb 사용
+  cypress: cypress-io/cypress@3.6.1 # Cypress Orb 사용
 
 workflows:
   build-and-test:
